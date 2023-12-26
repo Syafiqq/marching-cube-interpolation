@@ -1,0 +1,11 @@
+name: marching_cube_interpolation
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.12
+  - trimesh
+  - pyglet
+  - scipy
+  - rtree
+prefix: /Users/engineering/Documents/anaconda3/envs/marching_cube_interpolation
