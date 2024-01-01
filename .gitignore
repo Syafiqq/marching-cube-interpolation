@@ -364,3 +364,5 @@ pyrightconfig.json
 # End of https://www.toptal.com/developers/gitignore/api/jetbrains,pycharm,python
 
 /sfq
+/marching_cube/output/dump
+!/marching_cube/output/dump/.gitkeep
