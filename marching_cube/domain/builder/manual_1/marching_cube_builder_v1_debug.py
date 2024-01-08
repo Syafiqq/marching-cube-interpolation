@@ -6,10 +6,27 @@ from marching_cube.domain.rules.manual_1 import rules_manual_1
 import trimesh
 
 
+# https://stackoverflow.com/a/752562
+def __split_list(alist, wanted_parts=1):
+    length = len(alist)
+    return [alist[i * length // wanted_parts: (i + 1) * length // wanted_parts]
+            for i in range(wanted_parts)]
+
+
+def __create_int_dict(start: int, end: int, inc: int) -> dict[int: int]:
+    result: dict[int: int] = {}
+    for i in range(start, end, inc):
+        result[i] = 0
+    return result
+
+
 def build(
         values: [int],
         metadata: MarchingCubeMetadata,
         variant: int,
+        faces_actual: [[int]],
+        faces_expected: [[int]],
+        incorrect_faces_index: [int]
 ) -> trimesh.Trimesh:
     dictionary = {}
     points_p = []
@@ -75,7 +92,46 @@ def build(
                 points_p.append(poly_point)
                 dictionary[magnitude] = len(points_p) - 1
             position.append(dictionary[magnitude])
-        for poly_face in rules_manual_1.to_faces(position, point_type, variant=variant):
+
+        faces_candidate = rules_manual_1.to_faces(position, point_type, variant=variant)
+        if faces_candidate:
+            sanitised_faces_candidate = np.array(
+                np.split(np.array(faces_candidate, dtype=int), len(faces_candidate) // 4)
+            )[:, 1:].tolist()
+
+            problematic_faces_index: [(int, int)] = []
+            for candidate_index, face in enumerate(sanitised_faces_candidate):
+                actual_index = faces_actual.index(face)
+                if actual_index in incorrect_faces_index:
+                    problematic_faces_index.append((actual_index, candidate_index))
+
+            if problematic_faces_index:
+                print(point_type, f'0b{'{0:b}'.format(point_type).zfill(8)}')
+                for actual_index, candidate_index in problematic_faces_index:
+                    actual = sanitised_faces_candidate[candidate_index]
+                    expected = faces_expected[actual_index]
+                    print(f'{candidate_index}\t{actual}\t{expected}')
+
+                transition_mapping = __create_int_dict(0, 100, 1)
+                transition_position = range(0, 100, 1)
+                transition_faces = rules_manual_1.to_faces(transition_position, point_type, variant=variant)
+                transition_faces_expected = transition_faces.copy()
+                for _faces_index, _faces in enumerate(sanitised_faces_candidate):
+                    for _face_index, _face in enumerate(_faces):
+                        transition_mapping[_face] = transition_faces[_faces_index * 4 + _face_index + 1]
+
+                for actual_index, candidate_index in problematic_faces_index:
+                    expected = faces_expected[actual_index]
+
+                    for _expected_index, _expected in enumerate(expected):
+                        transition_faces_expected[candidate_index * 4 + _expected_index + 1] = \
+                            transition_mapping[_expected]
+                for _face in __split_list(transition_faces_expected, wanted_parts=len(transition_faces_expected) // 4):
+                    print(f'3, p[{_face[1]}], p[{_face[2]}], p[{_face[3]}],')
+
+                print()
+
+        for poly_face in faces_candidate:
             faces_p.append(poly_face)
 
     faces_p = np.array(np.split(np.array(faces_p, dtype=int), len(faces_p) // 4))[:, 1:]
