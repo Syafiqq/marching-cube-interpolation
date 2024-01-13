@@ -33,7 +33,7 @@ def generate(input_paths: [str], xy_size: int) -> ([int], MarchingCubeMetadata):
         inverted_image = cv.bitwise_not(image_memory)
         img_gray = cv.cvtColor(inverted_image, cv.COLOR_BGR2GRAY)
         ret, thresh = cv.threshold(img_gray, 150, 255, cv.THRESH_BINARY)
-        im2, contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
+        contours, hierarchy = cv.findContours(image=thresh, mode=cv.RETR_TREE, method=cv.CHAIN_APPROX_NONE)
 
         multi_points = []
         for contour in contours:
