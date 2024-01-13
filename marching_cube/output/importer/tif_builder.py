@@ -43,7 +43,7 @@ def example_tif_builder():
         3,
         2,
         False,
-        'result/objs/tif_builder_test'
+        '../result/generated/objs/tif_builder_test'
     )
 
 
