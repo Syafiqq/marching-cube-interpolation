@@ -8,4 +8,5 @@ dependencies:
   - pyglet
   - scipy
   - rtree
+  - opencv
 prefix: /Users/engineering/Documents/anaconda3/envs/marching_cube_interpolation
