@@ -368,3 +368,4 @@ pyrightconfig.json
 !/marching_cube/output/dump/.gitkeep
 /marching_cube/output/result/generated/
 !marching_cube/output/result/generated/**/.gitkeep
+/playground/
