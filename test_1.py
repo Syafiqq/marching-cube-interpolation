@@ -30,5 +30,6 @@ if __name__ == "__main__":
     cubes = generate_binary_combinations()
 
     total_combinations = list(range(256))
+    total_points = list(range(9))
 
-    print(total_combinations)
+    print(total_points)
