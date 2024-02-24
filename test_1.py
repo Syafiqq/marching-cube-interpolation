@@ -20,10 +20,13 @@ def generate_binary_combinations():
 
     # reverse the combination
     value_reversed = [tuple(reversed(point)) for point in value]
+
+    # cnvert to map
+    value_reversed = {i: point for i, point in enumerate(value_reversed)}
     return value_reversed
 
 
 if __name__ == "__main__":
     cubes = generate_binary_combinations()
-    for combination in cubes:
-        print(combination)
+    for k, v in cubes.items():
+        print(k, v)
