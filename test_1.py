@@ -28,5 +28,7 @@ def generate_binary_combinations():
 
 if __name__ == "__main__":
     cubes = generate_binary_combinations()
-    for k, v in cubes.items():
-        print(k, v)
+
+    total_combinations = list(range(256))
+
+    print(total_combinations)
