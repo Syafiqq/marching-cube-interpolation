@@ -68,8 +68,7 @@ def generate_binary_combinations():
     return value_reversed
 
 
-### Still defect in the code
-if __name__ == "__main__":
+def main1():
     cube_points: Dict[int, Tuple[int, ...]] = generate_binary_combinations()
 
     total_combinations: [int] = list(range(256))
@@ -115,3 +114,7 @@ if __name__ == "__main__":
 
     for unique in uniqueness:
         print(unique, uniqueness[unique])
+
+
+if __name__ == "__main__":
+    main1()
