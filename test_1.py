@@ -219,5 +219,71 @@ def main3():
         print(unique, uniqueness[unique])
 
 
+def main4():
+    cube_points: Dict[int, Tuple[int, ...]] = generate_binary_combinations()
+
+    total_combinations: [int] = list(range(256))
+    num_of_points: [int] = list(range(9))
+    center = np.array([0.5, 0.5, 0.5])
+
+    uniqueness: Dict[int, Dict[Tuple[int, ...], [(int, [Tuple])]]] = {}
+
+    for num_of_point in num_of_points:
+        for cube_point_index in total_combinations:
+            cube_point = cube_points[cube_point_index]
+            if sum(cube_point) == num_of_point:
+                if num_of_point not in uniqueness:
+                    uniqueness[num_of_point] = {cube_point: [(cube_point_index, [])]}
+                else:
+                    has_matched = False
+                    indices = [i for i, x in enumerate(cube_point) if x == 1]
+                    vertices = [reverse_coordinate_mapping[i] for i in indices]
+                    np_vertices = np.array(vertices)
+                    rotated_points = np_vertices
+
+                    axes = ['x', 'y', 'z']
+                    angles = [0, 90, 180, 270]
+                    combinations = list(itertools.product(axes, angles, repeat=3))
+                    split_combinations = [[tuple(combination[i:i + 2]) for i in range(0, len(combination), 2)] for
+                                          combination in
+                                          combinations]
+                    for combination in split_combinations:
+                        for axis, angle in combination:
+                            angles_rad = angle * (np.pi / 180)
+                            rotated_points = rotate_points_around_center(rotated_points, angles_rad, axis, center)
+                        rotated_points_tuple: [Tuple[int, int, int]] = [tuple(np.round(point).astype(int)) for point
+                                                                        in rotated_points]
+                        rotated_cube_points = [0, 0, 0, 0, 0, 0, 0, 0]
+                        for point in rotated_points_tuple:
+                            index = coordinate_mapping.get(point)
+                            if index is not None:
+                                rotated_cube_points[index] = 1
+                        rotated_cube_points_tuple = tuple(rotated_cube_points)
+
+                        if rotated_cube_points_tuple in uniqueness[num_of_point]:
+                            uniqueness[num_of_point][rotated_cube_points_tuple].append((cube_point_index, combination))
+                            has_matched = True
+                            break
+                    if not has_matched:
+                        uniqueness[num_of_point][cube_point] = [(cube_point_index, [])]
+
+    print('''\nNormal\n''')
+    for unique in uniqueness:
+        print(unique, uniqueness[unique])
+
+    print('''\nIndex Only\n''')
+    # Index only
+    for unique in uniqueness:
+        uniqueness1 = uniqueness[unique]
+        for unique1 in uniqueness1:
+            list_of_tuples = uniqueness1[unique1]
+            first_indexes = list(map(lambda x: x[0], list_of_tuples))  # Get list of first indices from tuples
+            print(
+                str(unique).ljust(3),
+                str(len(first_indexes)).ljust(3),
+                first_indexes
+            )
+
+
 if __name__ == "__main__":
-    main2()
+    main4()
