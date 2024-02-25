@@ -444,13 +444,12 @@ def main6():
     """
     uniqueness: Dict[int, Dict[Tuple[int, ...], list[Tuple[int, list[Tuple[str, int]]]]]] = {}
 
-    for num_of_point in num_of_points:
-        for cube_point_index in total_combinations:
+    for cube_point_index in total_combinations:
+        for num_of_point in num_of_points:
             cube_point_expected = cube_points[cube_point_index]
             if sum(cube_point_expected) == num_of_point:
                 if num_of_point not in uniqueness:
                     uniqueness[num_of_point] = {cube_point_expected: [(cube_point_index, [])]}
-                    total_combinations.remove(cube_point_index)
                 else:
                     "Check if there is any matching data"
                     has_matched = False
@@ -489,11 +488,9 @@ def main6():
                                     (cube_point_index, executed_rotation)
                                 )
                                 has_matched = True
-                                total_combinations.remove(cube_point_index)
                                 break
 
                     if not has_matched:
-                        total_combinations.remove(cube_point_index)
                         uniqueness[num_of_point][cube_point_expected] = [(cube_point_index, [])]
 
     print('''\nNormal\n''')
