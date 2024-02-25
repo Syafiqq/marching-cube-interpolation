@@ -284,6 +284,21 @@ def main4():
                 first_indexes
             )
 
+    print('''\nGrouped by index key\n''')
+    result: Dict[int, str] = {}
+    for unique in uniqueness:
+        uniqueness1 = uniqueness[unique]
+        for unique1 in uniqueness1:
+            list_of_tuples = uniqueness1[unique1]
+            comparison = list_of_tuples[0]
+            for _tuple in list_of_tuples:
+                result[_tuple[0]] = f'{str(comparison[0]).ljust(3)} - {_tuple[1]}'
+    for index in list(range(256)):
+        print(
+            str(index).ljust(3),
+            result[index]
+        )
+
 
 if __name__ == "__main__":
     main4()
