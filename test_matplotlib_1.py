@@ -43,12 +43,20 @@ def show_cube():
 
     # Define mesh points
     mesh_points = np.array([(0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)])
+    mesh_points_line = np.append(mesh_points, [mesh_points[0]], axis=0)
+    ax.plot(mesh_points_line[:, 0], mesh_points_line[:, 1], mesh_points_line[:, 2], color='red', linewidth=3)
 
     # Create mesh
     X = np.array([[mesh_points[0, 0], mesh_points[1, 0]], [mesh_points[3, 0], mesh_points[2, 0]]])
     Y = np.array([[mesh_points[0, 1], mesh_points[1, 1]], [mesh_points[3, 1], mesh_points[2, 1]]])
     Z = np.array([[mesh_points[0, 2], mesh_points[1, 2]], [mesh_points[3, 2], mesh_points[2, 2]]])
     ax.plot_surface(X, Y, Z, color='yellow', alpha=0.5)
+
+    # Define line points
+    line_points = np.array([(1, 0, 0), (0, 1, 0)])
+
+    # Create line
+    ax.plot(line_points[:, 0], line_points[:, 1], line_points[:, 2], color='red', linewidth=3)
 
     # Show legend
     plt.show()
