@@ -4,17 +4,21 @@ import numpy as np
 
 
 def show_cube():
-    # Create axis
-    axes = [1, 1, 1]
-
     # Plot figure
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
-    # Set labels for axes
-    ax.plot([0, 1], [0, 0], [0, 0], color='r')
-    ax.plot([0, 0], [0, 1], [0, 0], color='g')
-    ax.plot([0, 0], [0, 0], [0, 1], color='b')
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    # Set orientation of the axes
+    ax.view_init(elev=15, azim=135)
+
+    # Draw axis lines
+    ax.plot([0, 1.5], [0, 0], [0, 0], color='r')
+    ax.plot([0, 0], [0, 1.5], [0, 0], color='g')
+    ax.plot([0, 0], [0, 0], [0, 1.5], color='b')
 
     # Voxels is used to customizations of the
     # sizes, positions and colors.
