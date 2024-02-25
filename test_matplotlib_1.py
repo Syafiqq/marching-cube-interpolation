@@ -34,6 +34,13 @@ def show_cube():
         ax.scatter(*point, label=label, s=100, c='blue')
         ax.text(*point, label, fontsize=16)
 
+    points = [(0, 0, 0)]
+    labels = ['1']
+    # Plot points
+    for point, label in zip(points, labels):
+        ax.scatter(*point, label=label, s=50, c='red')
+        ax.text(*point, label, fontsize=16)
+
     # Show legend
 
     plt.show()
