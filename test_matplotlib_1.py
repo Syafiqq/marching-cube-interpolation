@@ -41,8 +41,16 @@ def show_cube():
         ax.scatter(*point, label=label, s=50, c='red')
         ax.text(*point, label, fontsize=16)
 
-    # Show legend
+    # Define mesh points
+    mesh_points = np.array([(0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)])
 
+    # Create mesh
+    X = np.array([[mesh_points[0, 0], mesh_points[1, 0]], [mesh_points[3, 0], mesh_points[2, 0]]])
+    Y = np.array([[mesh_points[0, 1], mesh_points[1, 1]], [mesh_points[3, 1], mesh_points[2, 1]]])
+    Z = np.array([[mesh_points[0, 2], mesh_points[1, 2]], [mesh_points[3, 2], mesh_points[2, 2]]])
+    ax.plot_surface(X, Y, Z, color='yellow', alpha=0.5)
+
+    # Show legend
     plt.show()
 
 
