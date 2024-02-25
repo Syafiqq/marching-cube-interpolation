@@ -4,7 +4,7 @@ from typing import Tuple
 
 import numpy as np
 
-coordinate_mapping = {
+coordinate_mapping: Dict[Tuple[int, int, int], int] = {
     (0, 0, 0): 0,
     (1, 0, 0): 1,
     (1, 1, 0): 2,
@@ -15,7 +15,7 @@ coordinate_mapping = {
     (0, 1, 1): 7,
 }
 
-reverse_coordinate_mapping = {v: list(k) for k, v in coordinate_mapping.items()}
+reverse_coordinate_mapping: Dict[int, list[int]] = {v: list(k) for k, v in coordinate_mapping.items()}
 
 
 def rotate_points(points: np.array, angle: float, axis: str) -> np.array:
