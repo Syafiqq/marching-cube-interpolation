@@ -659,10 +659,36 @@ def reconcile1():
         (255, 255, []),
         # @formatter:on
     ]
+    center = np.array([0.5, 0.5, 0.5])
+
     for data in dataset:
         cube_point_expected = cube_points[data[0]]
-        cube_point_actual = cube_points[data[1]]
-        print(cube_point_expected, cube_point_actual)
+        cube_point_start = cube_points[data[1]]
+        indices = [i for i, x in enumerate(cube_point_start) if x == 1]
+        vertices = [reverse_coordinate_mapping[i] for i in indices]
+        np_vertices = np.array(vertices)
+
+        rotated_points = np_vertices
+        for axis, angle in data[2]:
+            angles_rad = angle * (np.pi / 180)
+            rotated_points = rotate_points_around_center(
+                rotated_points,
+                angles_rad,
+                axis,
+                center
+            )
+        rotated_points_tuple: [Tuple[int, int, int]] = [
+            tuple(np.round(point).astype(int)) for point in rotated_points
+        ]
+        print(rotated_points_tuple)
+        rotated_cube_points: [int] = [0, 0, 0, 0, 0, 0, 0, 0]
+        for point in rotated_points_tuple:
+            index = coordinate_mapping.get(point)
+            if index is not None:
+                rotated_cube_points[index] = 1
+        cube_point_actual = tuple(rotated_cube_points)
+        print(data[0], cube_point_start, cube_point_actual, cube_point_expected)
+        assert cube_point_actual == cube_point_expected
 
 
 if __name__ == "__main__":
