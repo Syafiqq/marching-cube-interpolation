@@ -13,7 +13,12 @@ def show_cube():
     ax.set_zlabel('Z')
 
     # Set orientation of the axes
-    ax.view_init(elev=15, azim=135)
+    ax.view_init(elev=-345, azim=-45)
+
+    # Set tick marks
+    ax.set_xticks([0, 0.5, 1, 1.5])
+    ax.set_yticks([0, 0.5, 1, 1.5])
+    ax.set_zticks([0, 0.5, 1, 1.5])
 
     # Draw axis lines
     ax.plot([0, 1.5], [0, 0], [0, 0], color='r')
