@@ -5,31 +5,19 @@ import numpy as np
 
 def show_cube():
     # Create axis
-    axes = [5, 5, 5]
-
-    # Create Data
-    data = np.ones(axes, dtype=bool)
-
-    # Control Transparency
-    alpha = 0.9
-
-    # Control colour
-    colors = np.empty(axes + [4], dtype=np.float32)
-
-    colors[:] = [1, 0, 0, alpha]  # red
+    axes = [1, 1, 1]
 
     # Plot figure
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
     # Set labels for axes
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
+    ax.plot([0, 1], [0, 0], [0, 0], color='r')
+    ax.plot([0, 0], [0, 1], [0, 0], color='g')
+    ax.plot([0, 0], [0, 0], [0, 1], color='b')
 
     # Voxels is used to customizations of the
     # sizes, positions and colors.
-    ax.voxels(data, facecolors=colors)
     plt.show()
 
 
