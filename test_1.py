@@ -385,6 +385,17 @@ def main5():
             result[index]
         )
 
+    print('''\nGrouped by group key\n''')
+    for unique in uniqueness:
+        uniqueness1 = uniqueness[unique]
+        for unique1 in uniqueness1:
+            list_of_tuples = uniqueness1[unique1]
+            comparison = list_of_tuples[0]
+            print(f'Group Key - {str(unique).ljust(3)} - {str(comparison[0]).ljust(3)}')
+            for _tuple in list_of_tuples:
+                print(f'{str(_tuple[0]).ljust(3)} - {_tuple[1]}')
+            print()
+
 
 if __name__ == "__main__":
     main5()
