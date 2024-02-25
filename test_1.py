@@ -455,11 +455,8 @@ def main6():
                     "Check if there is any matching data"
                     has_matched = False
                     for cube_point_start in uniqueness[num_of_point]:
-
-                        "Get the indices of the points"
-                        indices = [i for i, x in enumerate(cube_point_start) if x == 1]
-
                         "Get vertices given cube_point_start"
+                        indices = [i for i, x in enumerate(cube_point_start) if x == 1]
                         vertices = [reverse_coordinate_mapping[i] for i in indices]
                         np_vertices = np.array(vertices)
                         rotated_points = np_vertices
