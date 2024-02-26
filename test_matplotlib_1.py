@@ -1,11 +1,45 @@
+from typing import Tuple
+
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
+from matplotlib.figure import Figure
+
+
+def create_3d_plot(fig: Figure, fig_index: Tuple[int, int, int], vertices: [Tuple[int, int, int]]):
+    # Create the subplot
+    ax = fig.add_subplot(fig_index[0], fig_index[1], fig_index[2], projection='3d')
+
+    # Set label
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_zlabel('Z')
+
+    # Set orientation of the axes
+    ax.view_init(elev=-345, azim=-35)
+
+    # Set tick marks
+    ax.set_xticks([0, 0.5, 1, 1.5])
+    ax.set_yticks([0, 0.5, 1, 1.5])
+    ax.set_zticks([0, 0.5, 1, 1.5])
+
+    # Draw axis lines
+    ax.plot([0, 1.5], [0, 0], [0, 0], color='r')
+    ax.plot([0, 0], [0, 1.5], [0, 0], color='g')
+    ax.plot([0, 0], [0, 0], [0, 1.5], color='b')
+
+    # Define points and labels
+    points = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
+    labels = ['1', '2', '3', '4', '5', '6', '7', '8']
+
+    # Plot points
+    for point, label in zip(points, labels):
+        ax.scatter(*point, label=label, s=100, c='gray')
+        ax.text(*point, label, fontsize=16)
 
 
 def show_cube():
     # Create a figure
-    fig = plt.figure(figsize=(960/80, 480/80), dpi=80)
+    fig = plt.figure(figsize=(960 / 80, 480 / 80), dpi=80)
 
     # Create the first subplot
     ax1 = fig.add_subplot(121, projection='3d')
