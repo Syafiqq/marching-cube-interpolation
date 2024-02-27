@@ -1,8 +1,54 @@
+import math
 from typing import Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
+
+
+def split_number(number: int, max_value: int) -> list[int]:
+    result = []
+    while number > max_value:
+        result.append(max_value)
+        number -= max_value
+    result.append(number)
+    return result
+
+
+def create_subplot_index(rotation):
+    n_rows = 2 + math.ceil(len(rotation) / 2)
+    n_cols = 2 if len(rotation) > 1 else 1
+    subplot_index = list(range(1, (n_rows * n_cols) + 1))
+    if n_cols > 1:
+        # remove extra header
+        for i in range(1 + 1, n_cols + 1):
+            subplot_index.remove(i)
+        # remove extra content
+        extra_content = len(rotation) % 2
+        for i in range((n_rows * n_cols) - n_cols + 1 - extra_content, (n_rows * n_cols) - n_cols + 1):
+            subplot_index.remove(i)
+        # remove extra footer
+        for i in range((n_rows * n_cols) - n_cols + 1 + 1, (n_rows * n_cols) + 1):
+            subplot_index.remove(i)
+    subplots = []
+    for subplot in subplot_index:
+        subplots.append((n_rows, n_cols, subplot))
+    return subplots
+
+
+def create_image_plot(index: int, origin: int, rotation: list[Tuple[str, int]]):
+    new_rotation: list[Tuple[str, int]] = []
+    for axis, value in rotation:
+        if value > 90:
+            for v in split_number(value, 90):
+                new_rotation.append((axis, v))
+
+    if len(new_rotation) > 0:
+        rotation = new_rotation
+    del new_rotation
+
+    subplots = create_subplot_index(rotation)
+    print(subplots)
 
 
 def create_3d_plot(fig: Figure, fig_index: Tuple[int, int, int], vertices: [Tuple[int, int, int]]):
@@ -108,4 +154,5 @@ def show_cube():
 
 
 if __name__ == "__main__":
-    show_cube()
+    # show_cube()
+    create_image_plot(254, 127, [('x', 270)])
