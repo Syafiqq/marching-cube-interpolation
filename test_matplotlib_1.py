@@ -1,9 +1,12 @@
 import math
-from typing import Tuple
+from typing import Tuple, Dict
 
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.figure import Figure
+
+from test_1 import generate_binary_combinations, reverse_coordinate_mapping, rotate_points_around_center, \
+    reverse_coordinate_mapping_tuple
 
 
 def split_number(number: int, max_value: int) -> list[int]:
@@ -15,16 +18,14 @@ def split_number(number: int, max_value: int) -> list[int]:
     return result
 
 
-def create_subplot_index(rotation):
-    n_rows = 2 + math.ceil(len(rotation) / 2)
-    n_cols = 2 if len(rotation) > 1 else 1
+def create_subplot_index(n_rows: int, n_cols: int, rotation: int):
     subplot_index = list(range(1, (n_rows * n_cols) + 1))
     if n_cols > 1:
         # remove extra header
         for i in range(1 + 1, n_cols + 1):
             subplot_index.remove(i)
         # remove extra content
-        extra_content = len(rotation) % 2
+        extra_content = rotation % 2
         for i in range((n_rows * n_cols) - n_cols + 1 - extra_content, (n_rows * n_cols) - n_cols + 1):
             subplot_index.remove(i)
         # remove extra footer
@@ -47,31 +48,62 @@ def create_image_plot(index: int, origin: int, rotation: list[Tuple[str, int]]):
         rotation = new_rotation
     del new_rotation
 
-    subplots = create_subplot_index(rotation)
-    print(subplots)
+    n_rows = 2 + math.ceil(len(rotation) / 2)
+    n_cols = 2 if len(rotation) > 1 else 1
+    fig_index = create_subplot_index(n_rows, n_cols, len(rotation))
+
+    """
+    Create a dictionary of all possible combinations of 8 points
+    {
+        0: (0, 0, 0, 0, 0, 0, 0, 0, 0)
+        1: (1, 0, 0, 0, 0, 0, 0, 0, 0)
+        ...
+        255: (1, 1, 1, 1, 1, 1, 1, 1, 1)
+    }
+    """
+    cube_points: Dict[int, Tuple[int, ...]] = generate_binary_combinations()
+    center = np.array([0.5, 0.5, 0.5])
+    vertices: list[list[Tuple[int, int, int]]] = []
+    titles: list[str] = []
+
+    # Vertices start
+    start_cube_point = cube_points[origin]
+    start_indices = [i for i, x in enumerate(start_cube_point) if x == 1]
+    start_vertices: list[Tuple[int, int, int]] = [reverse_coordinate_mapping_tuple[i] for i in start_indices]
+    vertices.append(start_vertices)
+    titles.append(f'Initial rule:${origin}')
+
+    np_vertices = np.array(start_vertices)
+    rotated_points = np_vertices
+    for axis, angle in rotation:
+        angles_rad = angle * (np.pi / 180)
+        rotated_points = rotate_points_around_center(rotated_points, angles_rad, axis, center)
+        rotated_points_tuple: [Tuple[int, int, int]] = [
+            tuple(np.round(point).astype(int)) for point in rotated_points
+        ]
 
 
 def create_3d_plot(fig: Figure, fig_index: Tuple[int, int, int], vertices: [Tuple[int, int, int]]):
     # Create the subplot
-    ax = fig.add_subplot(fig_index[0], fig_index[1], fig_index[2], projection='3d')
+    plot = fig.add_subplot(fig_index[0], fig_index[1], fig_index[2], projection='3d')
 
     # Set label
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
+    plot.set_xlabel('X')
+    plot.set_ylabel('Y')
+    plot.set_zlabel('Z')
 
     # Set orientation of the axes
-    ax.view_init(elev=-345, azim=-35)
+    plot.view_init(elev=-345, azim=-35)
 
     # Set tick marks
-    ax.set_xticks([0, 0.5, 1, 1.5])
-    ax.set_yticks([0, 0.5, 1, 1.5])
-    ax.set_zticks([0, 0.5, 1, 1.5])
+    plot.set_xticks([0, 0.5, 1, 1.5])
+    plot.set_yticks([0, 0.5, 1, 1.5])
+    plot.set_zticks([0, 0.5, 1, 1.5])
 
     # Draw axis lines
-    ax.plot([0, 1.5], [0, 0], [0, 0], color='r')
-    ax.plot([0, 0], [0, 1.5], [0, 0], color='g')
-    ax.plot([0, 0], [0, 0], [0, 1.5], color='b')
+    plot.plot([0, 1.5], [0, 0], [0, 0], color='r')
+    plot.plot([0, 0], [0, 1.5], [0, 0], color='g')
+    plot.plot([0, 0], [0, 0], [0, 1.5], color='b')
 
     # Define points and labels
     points = [(0, 0, 0), (1, 0, 0), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
@@ -79,8 +111,8 @@ def create_3d_plot(fig: Figure, fig_index: Tuple[int, int, int], vertices: [Tupl
 
     # Plot points
     for point, label in zip(points, labels):
-        ax.scatter(*point, label=label, s=100, c='gray')
-        ax.text(*point, label, fontsize=16)
+        plot.scatter(*point, label=label, s=100, c='gray')
+        plot.text(*point, label, fontsize=16)
 
 
 def show_cube():
