@@ -482,7 +482,9 @@ def create_fig_ordered():
         # @formatter:on
     ]
     for index, origin, rotation in dataset:
-        create_image_plot(f'/tmp/fig_ordered/{str(index).zfill(3)}.png', index, origin, rotation)
+        filepath = f'/tmp/fig_ordered/{str(index).zfill(3)}.png'
+        create_directory(filepath)
+        create_image_plot(filepath, index, origin, rotation)
 
 
 def create_fig_grouped():
@@ -513,3 +515,4 @@ def create_fig_grouped():
 
 if __name__ == "__main__":
     create_fig_grouped()
+    create_fig_ordered()
