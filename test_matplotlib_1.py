@@ -31,7 +31,7 @@ def create_subplot_index(n_rows: int, n_cols: int, rotation: int):
     return subplots
 
 
-def create_image_plot(index: int, origin: int, rotation: list[Tuple[str, int]]):
+def create_image_plot(file_path: str, index: int, origin: int, rotation: list[Tuple[str, int]]):
     new_rotation: list[Tuple[str, int]] = []
     for axis, value in rotation:
         if value > 90:
@@ -90,7 +90,7 @@ def create_image_plot(index: int, origin: int, rotation: list[Tuple[str, int]]):
     for (fig_index, title, vertex) in zip(fig_index, titles, vertices):
         create_3d_plot(fig, fig_index, title, vertex)
 
-    plt.savefig(f'/tmp/fig_ordered/{str(index).zfill(3)}.png')
+    plt.savefig(file_path)
     plt.close()
 
 
@@ -470,4 +470,4 @@ if __name__ == "__main__":
         # @formatter:on
     ]
     for index, origin, rotation in dataset:
-        create_image_plot(index, origin, rotation)
+        create_image_plot(f'/tmp/fig_ordered/{str(index).zfill(3)}.png', index, origin, rotation)
