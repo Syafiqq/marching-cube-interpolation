@@ -1,4 +1,4 @@
-name: marching_cube_interpolation
+name: marching_cube_interpolation_1
 channels:
   - conda-forge
   - defaults
@@ -8,4 +8,4 @@ dependencies:
   - pyglet
   - scipy
   - rtree
-prefix: /Users/engineering/Documents/anaconda3/envs/marching_cube_interpolation
+prefix: /Users/engineering/Documents/anaconda3/envs/marching_cube_interpolation_1
