@@ -366,3 +366,6 @@ pyrightconfig.json
 /sfq
 /marching_cube/output/dump
 !/marching_cube/output/dump/.gitkeep
+/marching_cube/output/result/generated/
+!marching_cube/output/result/generated/**/.gitkeep
+/playground/
